@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets / config — never commit API keys
+.env
+.env.*
+*.key
+.streamlit/secrets.toml
+
+# Local lab data & uploads (user sequences stay local)
+data/uploads/
+*.local.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

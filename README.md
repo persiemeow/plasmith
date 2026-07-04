@@ -42,6 +42,11 @@ computes them in tested code, not in an LLM, and shows its work.
    [`docs/TM_SPEC.md`](docs/TM_SPEC.md).)
 3. **Lab-context awareness.** You configure your enzymes, plasmids, kits, strains, and
    polymerases once; Plasmith designs and validates against *your* bench, not a generic one.
+4. **A visual sequence workspace.** A SnapGene-like tabbed viewer — **backbone · primers ·
+   inserts · finished product** — that **overlays the validation findings on the map**, so a
+   flagged stop codon or non-unique cut site is shown *where it happens*, not just listed. Add
+   or edit features and primers and the checks re-run live. (Full drag-canvas editing is
+   roadmap; see [`docs/SCOPE.md`](docs/SCOPE.md).)
 
 ## How it's built — the trust boundary
 
@@ -63,7 +68,9 @@ prose. That split is the product's trust story. Full detail in
 
 A **Mode B audit** of an annotated GenBank plasmid on a single Streamlit page, running ~5
 deterministic checks, **plus** a standalone primer-pair Tm panel (Q5 vs Taq) with inline
-reconciliation against NEB's public calculator. It ships with **golden fixtures** that
+reconciliation against NEB's public calculator, **plus** the tabbed **Sequence Workspace**
+(viewer with findings overlaid + form-based feature/primer editing). It ships with **golden
+fixtures** that
 double as the definition-of-done *and* the one-click demo, a `FakeLLM` stub so the demo
 survives an API outage, and an explicit SCOPE/LIMITATIONS section. Everything decided is in
 [`DECISIONS.md`](DECISIONS.md); the acceptance criteria are in

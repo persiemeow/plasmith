@@ -120,6 +120,37 @@ checks, and recommended controls.
   diagnostic colony-PCR primers or restriction digests
 - **Virtual gel / plasmid map** *(from the original brief — confirm for MVP)*
 
+## Sequence viewer & editor (SnapGene-like workspace)
+
+A visual workspace for looking at and editing the DNA, organised as **four tabs** so the
+user follows the construct from parts to product:
+
+1. **Backbone** — the vector: origin, resistance marker, MCS, promoters.
+2. **Primers** — every primer, its binding site on the template, orientation, and per-vendor
+   Tm (feeds the Tm engine in [`docs/TM_SPEC.md`](docs/TM_SPEC.md)).
+3. **Inserts** — the gene block(s) / fragment(s) to be cloned in.
+4. **Finished product** — the in-silico assembled construct (backbone + insert(s)), i.e. the
+   plasmid you would actually order/verify.
+
+Each tab shows an **annotated map** (circular for plasmids, linear for fragments/primers) +
+a **feature table** + the **sequence**. The differentiator vs SnapGene: **validation findings
+are overlaid directly on the map** — a premature stop, a non-unique cut site, a feature
+collision, a methylation-blocked site are highlighted *in place*, so the audit becomes
+spatial, not just a list.
+
+**Edit operations (v1 — form/side-panel based, not free-drag):**
+- **Features:** add, edit, or delete a feature (name, type, start/end, strand).
+- **Primers:** add a primer by pasting a sequence *or* by selecting a region to derive one;
+  see its binding site and Tm immediately.
+- Every edit **re-runs the affected checks live**, so the viewer and the validation layer are
+  the same surface — this coupling is the point.
+
+**Deferred to roadmap:** full SnapGene-parity interactive canvas editing (click-drag feature
+handles, in-place sequence editing, drag-to-select), and real-time multi-user editing. See
+[`docs/SCOPE.md`](docs/SCOPE.md). Candidate libraries for that stage: OpenVectorEditor
+(`@teselagen/ove`) or SeqViz embedded as a Streamlit custom component; v1 renders with
+`dna_features_viewer`.
+
 ## Open questions (next interview batch)
 
 - **Data sources:** Addgene (do you have API access, or curate a local set?);

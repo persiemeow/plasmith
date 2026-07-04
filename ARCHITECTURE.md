@@ -82,13 +82,15 @@ plasmith/
       2_Design.py           # Mode A wizard
       3_Audit.py            # Mode B uploader
       4_Results.py          # tabs: order list / sequence / map / gel / report / protocol
+      5_Sequence_Workspace.py # SnapGene-like viewer/editor; tabs: backbone/primers/inserts/product
   core/
     io/                     # parse & write sequence files (FASTA, GenBank)
-    edit/                   # sequence operations: insert / replace / fuse; assembly
+    edit/                   # sequence operations: insert / replace / fuse; assembly; feature CRUD
     calc/                   # Tm (polymerase-aware), GC, primer metrics
     validate/               # rule engine + individual checks (see §7)
     reference/              # catalogs: plasmids, codon-usage tables, part variants
     simulate/               # in-silico assembly + virtual gel + plasmid map
+    view/                   # render annotated maps + overlay validation findings (see §12)
     design/                 # primer design; assembly-method selection
   llm/                      # bounded LLM functions (see §6)
   store/                    # local persistence (SQLite or JSON)
@@ -164,7 +166,11 @@ added independently without touching the runner. Checks to implement (grouped):
   salt/Mg²⁺-corrected nearest-neighbour models), codon tables.
 - **pydna** — in-silico assembly (Gibson, restriction/ligation), primer design,
   simulated PCR and gels.
-- **dna_features_viewer** — plasmid/linear feature maps.
+- **dna_features_viewer** — plasmid/linear feature maps; also the v1 renderer for the
+  Sequence Workspace, with validation findings overlaid as extra annotations (§12).
+- *(roadmap)* **OpenVectorEditor (`@teselagen/ove`)** or **SeqViz** — full interactive
+  DNA editor, embedded as a Streamlit custom component when the workspace moves beyond
+  form-based editing (§12).
 - **matplotlib** — virtual gel rendering.
 - **Streamlit** — UI. **SQLite/JSON** — local store. **anthropic** — LLM layer.
 - Polymerase-aware Tm: wrap Biopython's corrected nearest-neighbour Tm and add a
@@ -213,3 +219,23 @@ added independently without touching the runner. Checks to implement (grouped):
    the live-demo fallback (`DECISIONS.md` #11).
 7. **Deferred to roadmap (not v1):** Mode A design, `core/edit`/`core/simulate`, virtual gel
    — see [`docs/SCOPE.md`](docs/SCOPE.md).
+
+## 12. Sequence viewer & editor (Sequence Workspace)
+
+A SnapGene-like workspace, organised as **four tabs** — **Backbone · Primers · Inserts ·
+Finished product** — each rendering an annotated map + a feature table + the sequence. Its
+one differentiator over a generic editor: it **overlays the deterministic validation findings
+on the map**, so an audit result is spatial (the premature stop, the non-unique cut, the
+feature collision are highlighted where they occur).
+
+- **Rendering** lives in `core/view` (pure functions: `SeqRecord → figure/spec`), consuming
+  the same `Construct` + `ValidationReport` the audit produces. It renders **no** verdicts of
+  its own — it only *draws* what the deterministic core computed (the §3 trust boundary holds
+  in the UI too).
+- **Editing** in v1 is **form/side-panel based** and flows through `core/edit` (feature CRUD;
+  add-primer by paste or region-selection). Every edit re-runs the affected checks in
+  `core/validate` and re-renders — viewer and validation are one surface.
+- **Data-model impact:** `Construct` must support feature create/edit/delete and carry
+  `topology`; primers are first-class so they can be listed, mapped, and Tm-scored.
+- **Build note:** feasible in the MVP with `dna_features_viewer` + Streamlit widgets. Full
+  drag-on-canvas editing (OpenVectorEditor / SeqViz) is roadmap — see [`docs/SCOPE.md`](docs/SCOPE.md).

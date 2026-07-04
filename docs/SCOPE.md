@@ -16,6 +16,9 @@ contract; the UI surfaces a short version of it next to every clean result.
 - Dam/Dcm methylation vs the prep strain in the lab profile.
 - Primer-pair Tm / annealing temperature for **Q5 and Taq**, with tailed-primer awareness
   (separate primer panel — see [`TM_SPEC.md`](TM_SPEC.md)).
+- A tabbed **Sequence Workspace** (backbone / primers / inserts / finished product) that
+  renders annotated maps with the findings above **overlaid**. v1 editing is **form-based**
+  (feature add/edit/delete, add primer); every edit re-runs the affected checks.
 
 Every check reports `ran | skipped | error`. **`skipped` is shown, never hidden** — e.g. an
 unannotated FASTA upload skips the integrity checks rather than passing them.
@@ -36,6 +39,8 @@ unannotated FASTA upload skips the integrity checks rather than passing them.
 - **Strain/expression compatibility**, toxicity, or copy-number effects.
 - **Fluorescent-variant or "better part" suggestion** — an *opinion* feature kept off the
   pass/fail surface; if added later it is presented as a property vector, not a verdict.
+- **Full SnapGene-parity editing** — drag-on-canvas feature handles, in-place sequence
+  editing, and multi-user editing are roadmap; the v1 Sequence Workspace edits via forms only.
 
 ## Roadmap (post-MVP)
 

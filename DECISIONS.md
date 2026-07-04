@@ -23,7 +23,8 @@ Tm) with the least surface area. Mode A (intent-driven design) is **out of scope
 | 3 | Single page vs wizard (`ARCH §9`) | **Single scrolling Audit page** | Wizard is a Mode A / post-MVP concern |
 | 4 | Persistence (`ARCH §9`) | **One JSON lab profile + a `data/` folder of uploaded files** | Human-readable, no schema migration; drop SQLite for v1 |
 | 5 | Output formats (`ARCH §10`, `DESIGN`) | **GenBank + FASTA via Biopython only** | SnapGene `.dna` is a proprietary binary rabbit hole |
-| 6 | Results tabs; map + gel in v1? (`ARCH §9`) | **Findings table + Tm panel only**; defer virtual gel; minimal static plasmid map only if time allows | Keeps v1 to the trust + Tm demo |
+| 6 | Results tabs; map + gel in v1? (`ARCH §9`) | **Findings table + Tm panel + the Sequence Workspace** (tabbed viewer, below); defer virtual gel | Viewer makes the audit visual/demo-able; gel adds little |
+| 6b | DNA viewer/editor scope (`ARCH §12`, `DESIGN`) | **v1 = tabbed viewer (backbone/primers/inserts/product) with findings overlaid + form-based feature CRUD and add-primer**; full drag-canvas editing = roadmap | A read+light-edit viewer is cheap and differentiated; SnapGene-parity editing is a multi-week build we won't win on |
 | 7 | Polymerases to ship first (`ARCH §10`, `DESIGN`) | **Q5 + Taq only** | Maximal, defensible Ta delta; two well-documented NEB models to benchmark against |
 | 8 | Reference data source (`ARCH §10`, `DESIGN`) | **Bundle a tiny curated set in `data/`** | No live Addgene, no variant reference set for v1 |
 | 9 | FASTA has no CDS features — how do integrity checks behave? | **Require annotated GenBank for integrity checks**; on FASTA run only alphabet/topology-independent checks and return an explicit `skipped — needs annotation` | A missing annotation must never read as a pass |
@@ -51,5 +52,7 @@ Taq annealing temperatures with tailed-primer awareness and NEB reconciliation.
 ## Deferred to the roadmap (NOT v1)
 
 Mode A intent parsing/design · Gibson overlap-Tm balance & Golden Gate overhang-fidelity
-design · virtual gel · codon QC beyond CAI · mammalian Kozak/2A/IRES special-casing ·
-fluorescent-variant suggestion · live Addgene. See [`docs/SCOPE.md`](docs/SCOPE.md).
+design · virtual gel · **full interactive canvas editing of the Sequence Workspace
+(OpenVectorEditor / SeqViz; drag feature handles, in-place sequence editing, multi-user)** ·
+codon QC beyond CAI · mammalian Kozak/2A/IRES special-casing · fluorescent-variant
+suggestion · live Addgene. See [`docs/SCOPE.md`](docs/SCOPE.md).
